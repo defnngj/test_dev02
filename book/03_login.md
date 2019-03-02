@@ -12,11 +12,13 @@
 * 请求路径 login_action/
 * 请求方法：get/post
 * input 标签的 name属性是传参的名称
-  
+
 在 __views.py__ 文件中：
 
 ```python 
 from django.contrib import auth
+from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 def login_action(request):
     if request.method == "POST":
@@ -31,6 +33,13 @@ def login_action(request):
         else:
             return render(request, "index.html",
                                     {"error": "用户名或者密码错误"})
+
+
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect("/index/")
 
 ```
 * request.POST.get("username", "") 获取POST请求的参数。
