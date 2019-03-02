@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+    <form action="/index/" method="post">
+      <p>username:
+          <input type="text" name="username" />
+      </p>
+      <p>password:
+          <input type="password" name="password" />
+      </p>
+        <div style="color:red">{{ error }}</div>
+        {% csrf_token %}
+      <input type="submit" value="Login" />
+    </form>
+</body>
+</html>
+
+
+<!--http://127.0.0.1:8000/login_action?username=asdfas&password=asdfa-->
+<!--http://127.0.0.1:8000/index/login_action?username=tom&password=123-->
+<!--http://127.0.0.1:8000/index/form_action.asp?fname=ton&lname=123-->
