@@ -31,20 +31,26 @@ def index(request):
                 "error": "用户名或密码错误"})
         else:
             auth.login(request, user)  # 记录用户的登录状态
-            return HttpResponseRedirect("/manage/")
-
-
-# 登录成功，管理页面
-@login_required
-def manage(request):
-    return render(request, "manage.html")
-
+            return HttpResponseRedirect("/project/")
 
 # 处理用户的退出
 @login_required
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/index/")
+
+
+
+# 登录成功，默认项目管理页
+@login_required
+def project_manage(request):
+    return render(request, "project.html")
+
+
+# 模块管理
+@login_required
+def module_manage(request):
+    return render(request, "module.html")
 
 
 
@@ -65,3 +71,20 @@ view --- Controller
 
 #客户端（浏览器） --->request     服务器（django）
 #客户端（浏览器） Response<---    服务器（django）
+
+# django 引用 bootstrap
+# 1、使用 cdn
+# 2、把资源文件放到本地 static/
+# 3、用django-bootstrap 插件（扩展）
+
+
+
+
+
+
+
+
+
+
+
+
