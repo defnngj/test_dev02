@@ -35,6 +35,16 @@ class Module(models.Model):
 数据类型查看 ```C:\Python37\Lib\site-packages\django\db\models\fields\__init__.py```
 
 
+__参数说明__
+
+* max_length 最大长度。
+* default 默认值。
+* null 针对数据库，null=True 表示该字段允许为空。
+* blank 针对表单，blank=True 表示表单该字段可以为空。 
+* auto_now 每次更新数据，都会获取最新时间更新。
+* auto_now_add 当数据被创建时，获取最新时间更新。
+* on_delete 指定关联数据， models.CASCADE 表示删除关联数据时，与之关联也删除。
+
 ### 数据库表操作：
 
 * 创建
