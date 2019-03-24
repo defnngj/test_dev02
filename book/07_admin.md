@@ -10,8 +10,8 @@ from user_app.models import Project
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ['name', 'describe', 'status', 'start_time','id']  #显示字段
-    search_fields = ['name'] #搜索栏
-    list_filter = ['status'] #过滤器
+    search_fields = ['name']   # 搜索栏
+    list_filter = ['status']   # 过滤器
 
 
 admin.site.register(Event, ProjectAdmin)

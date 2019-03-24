@@ -54,6 +54,11 @@
       <h4 class="sub-header">项目列表</h4>
       <div class="table-responsive">
         <table class="table table-striped">
+
+          {% for project in projects%}
+            {{project.name}}<br>
+          {% endfor%}
+
           <thead>
             <tr>
               <th>#</th>

@@ -49,7 +49,7 @@ __参数说明__
 
 * 创建
 ```python
-Project.objects.create()
+Project.objects.create(name="项目", describe="描述")
 ```
 
 * 查询
@@ -73,3 +73,7 @@ Project.objects.select_for_update().filter(name__contains='项目').update(descr
 ```python
 Project.objects.get(name='xxx测试项目').delete()
 ```
+
+ORM优势：
+* 更简单
+* 更统一

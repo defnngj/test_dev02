@@ -2,9 +2,9 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from personal.models.project import Project
 
 
-# Create your views here.
 # MTV  view
 def say_hello(request):
     input_name = request.GET.get("name", "")
@@ -40,11 +40,11 @@ def logout(request):
     return HttpResponseRedirect("/index/")
 
 
-
 # 登录成功，默认项目管理页
 @login_required
 def project_manage(request):
-    return render(request, "project.html")
+    project_all = Project.objects.all()
+    return render(request, "project.html", {"projects": project_all})
 
 
 # 模块管理
