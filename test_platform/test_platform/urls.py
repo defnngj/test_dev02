@@ -18,6 +18,7 @@ from django.urls import path
 from personal.views import login_views
 from personal.views import project_views
 from personal.views import module_views
+from js_demo import js_views
 
 
 # 路由匹配
@@ -35,5 +36,9 @@ urlpatterns = [
     path('project/edit_project/<int:pid>/', project_views.edit_project),
 
     path('module/', module_views.module_manage),
+
+    path('js/', js_views.index),
+    path('js_jisuan/', js_views.jisuan),
+
 
 ]
