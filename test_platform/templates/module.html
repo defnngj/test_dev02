@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block base %}
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+				aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">接口测试平台</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">Settings</a></li>
+				<li><a href="/logout/">logout</a></li>
+			</ul>
+			<form class="navbar-form navbar-right">
+				<input type="text" class="form-control" placeholder="Search...">
+			</form>
+		</div>
+	</div>
+</nav>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-3 col-md-2 sidebar">
+			<ul class="nav nav-sidebar">
+				<li>
+					<a href="/project/">
+						<i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理
+					</a>
+				</li>
+				<li class="active">
+					<a href="/module/">
+						<i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理
+					</a>
+				</li>
+			</ul>
+			<ul class="nav nav-sidebar">
+				<li><a href="">用例管理</a></li>
+				<li><a href="">任务管理</a></li>
+			</ul>
+			<ul class="nav nav-sidebar">
+				<li><a href="">mock Server</a></li>
+				<li><a href="">测试工具</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+
+		<!--模块列表-->
+      {% if type == "list" %}
+      <h4 class="sub-header">模块列表
+        <button type="button"
+                class="btn btn-sm btn-primary"
+                style="float: right;"
+                onclick="location.href='/module/add_module/'"
+        >创建</button>
+      </h4>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>名称</th>
+              <th>描述</th>
+              <th>项目</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for module in modules %}
+            <tr>
+              <td>{{ module.id }}</td>
+              <td>{{ module.name }}</td>
+              <td>{{ module.describe }}</td>
+              <td>{{ module.project }}</td>
+              <td>{{ module.create_time | date:"Y-m-d H:i:s" }}</td>
+              <td>
+                <a href="/module/edit_module/{{ module.id }}/">
+                  <i class="glyphicon glyphicon-pencil"></i>
+                </a>
+                <a href="/module/delete_module/{{ module.id }}/" style="margin-left: 10px;">
+                  <i class="glyphicon glyphicon-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+	   <!--添加模块-->
+      {% if type == "add" %}
+      <h4 class="sub-header">添加模块</h4>
+      <form class="form-horizontal" method="post" action="/module/add_module/">
+        <div class="control-group">
+          <label class="control-label">项目</label>
+          <div class="controls">
+            {{ form.project }}
+          </div>
+        </div>
+
+		<div class="control-group">
+          <label class="control-label">名称</label>
+          <div class="controls">
+            {{ form.name }}
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">描述</label>
+          <div class="controls">
+            {{ form.describe }}
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-success">保存</button>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+
+	 <!--编辑模块-->
+      {% if type == "edit" %}
+      <h4 class="sub-header">编辑模块</h4>
+      <form action="/module/edit_module/{{ id }}/" method="post">
+        {{ form.as_p  }}
+        <input class="btn btn-success" type="submit" value="保存">
+      </form>
+      {% endif %}
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

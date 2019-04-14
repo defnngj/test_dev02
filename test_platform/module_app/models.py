@@ -1,5 +1,5 @@
 from django.db import models
-from personal.models.project import Project
+from project_app.models import Project
 
 
 class Module(models.Model):

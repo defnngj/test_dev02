@@ -1,15 +1,7 @@
 from django.db import models
 
+
 # Create your models here.
-# MTV  ORM
-
-# 在编程语言里面在夹杂了SQL语句
-#
-# python  -->  pymysql  -->  MySQL
-# django --> ORM --> mymysql --> MySQL
-# ORM  像操作对象一样的操作数据库
-
-
 class Project(models.Model):
     """
     项目表

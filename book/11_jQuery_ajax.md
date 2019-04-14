@@ -11,7 +11,7 @@
 这里没有用到```form```表单。 通过onclick绑定```myFunction()```方法。
 
 2、页面中插入JS代码
-```javasctipt
+```js
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 
 <script type="text/javascript">

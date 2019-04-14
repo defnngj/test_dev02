@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from personal.models.project import Project
-from django.http import HttpResponse, HttpResponseRedirect
-from personal.forms import ProjectForm
+from project_app.models import Project
+from django.http import HttpResponseRedirect
+from project_app.froms import ProjectForm
 
 
 @login_required
@@ -33,6 +33,22 @@ def add_project(request):
         return HttpResponseRedirect("/project/")
 
 
+def delete_project(request, pid):
+    """
+    删除项目
+    """
+    if request.method == "GET":
+        try:
+            project = Project.objects.get(id=pid)
+        except Project.DoesNotExist:
+            return HttpResponseRedirect("/project/")
+        else:
+            project.delete()
+        return HttpResponseRedirect("/project/")
+    else:
+        return HttpResponseRedirect("/project/")
+
+
 @login_required
 def edit_project(request, pid):
     """
@@ -46,7 +62,7 @@ def edit_project(request, pid):
                                                     "form": form,
                                                     "id": pid})
 
-    elif request.method == "POST":
+    if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']

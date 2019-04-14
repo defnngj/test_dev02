@@ -90,7 +90,7 @@
                 <a href="/project/edit_project/{{ project.id }}/">
                   <i class="glyphicon glyphicon-pencil"></i>
                 </a>
-                <a href="/project/delete_project/" style="margin-left: 10px;">
+                <a href="/project/delete_project/{{ project.id }}/" style="margin-left: 10px;">
                   <i class="glyphicon glyphicon-trash"></i>
                 </a>
               </td>
@@ -150,7 +150,7 @@
       <h4 class="sub-header">编辑项目</h4>
       <form action="/project/edit_project/{{ id }}/" method="post">
         {{ form.as_p  }}
-        <input type="submit" value="Submit">
+        <input class="form-horizontal" type="submit" value="保存">
       </form>
       {% endif %}
 

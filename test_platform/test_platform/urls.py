@@ -14,31 +14,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from personal.views import login_views
-from personal.views import project_views
-from personal.views import module_views
+from django.urls import path, include
+from user_app import views
 from js_demo import js_views
 
 
 # 路由匹配
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/', login_views.say_hello),
-    path('', login_views.index),
-    path('index/', login_views.index),
-    path('accounts/login/', login_views.index),
-    path('logout/', login_views.logout),
+    # 用户应用
+    path('hello/', views.say_hello),
+    path('', views.index),
+    path('index/', views.index),
+    path('accounts/login/', views.index),
+    path('logout/', views.logout),
 
-    # project管理
-    path('project/', project_views.project_manage),
-    path('project/add_project/', project_views.add_project),
-    path('project/edit_project/<int:pid>/', project_views.edit_project),
+    # 项目管理
+    path('project/', include('project_app.urls')),
 
-    path('module/', module_views.module_manage),
+    # 模块管理
+    path('module/', include('module_app.urls')),
 
+    # js例子--删除
     path('js/', js_views.index),
     path('js_jisuan/', js_views.jisuan),
 
+    # 重构  在功能不变的基础上修改代码的结构
 
 ]
