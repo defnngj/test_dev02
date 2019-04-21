@@ -31,9 +31,10 @@ urlpatterns = [
 
     # 项目管理
     path('project/', include('project_app.urls')),
-
     # 模块管理
     path('module/', include('module_app.urls')),
+    # 用例管理
+    path('testcase/', include('testcase_app.urls')),
 
     # js例子--删除
     path('js/', js_views.index),

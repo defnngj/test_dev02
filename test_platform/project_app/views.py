@@ -10,7 +10,7 @@ def project_manage(request):
     """
     项目管理
     """
-    project_all = Project.objects.all()
+    project_all = Project.objects.all() #rpc  webserver soap
     return render(request, "project.html", {"projects": project_all,
                                             "type": "list"})
 
