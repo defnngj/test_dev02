@@ -41,13 +41,19 @@
 				</li>
 			</ul>
 			<ul class="nav nav-sidebar">
-				<li class="active"><a href="/testcase/">用例管理</a></li>
-				<li><a href="">任务管理</a></li>
-			</ul>
-			<ul class="nav nav-sidebar">
-				<li><a href="">mock Server</a></li>
-				<li><a href="">测试工具</a></li>
-			</ul>
+                <li><a href="/testcase/">
+                  <i class="glyphicon glyphicon-list-alt"></i>&nbsp&nbsp用例管理</a></li>
+                <li><a href="">
+                  <i class="glyphicon glyphicon-th-list"></i>&nbsp&nbsp任务管理</a></li>
+              </ul>
+              <ul class="nav nav-sidebar">
+                <li><a href="">
+                  <i class="glyphicon glyphicon-log-in"></i>&nbsp&nbspmock Server</a>
+                </li>
+                <li><a href="">
+                  <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具</a>
+                </li>
+              </ul>
 		</div>
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -59,7 +65,7 @@
       <!--<div class="table-responsive">-->
             <div class="input-group">
                 <span class="input-group-addon">* URL</span>
-                <input id="req_url" type="text" class="form-control" placeholder="url">
+                <input id="req_url" type="text" class="form-control" value="http">
             </div>
 
           <br>
@@ -81,7 +87,7 @@
 
             <div class="input-group">
                 <span class="input-group-addon">header</span>
-                <input id="header" type="text" class="form-control" placeholder="header">
+                <input id="header" type="text" class="form-control" value="{}" >
             </div>
 
             <div style="margin-top: 10px;">
@@ -96,12 +102,12 @@
 
             <div class="input-group">
                 <span class="input-group-addon">参数</span>
-                <input id="parameter" type="text" class="form-control">
+                <input  value="{}" id="parameter" type="text" class="form-control">
             </div>
             <p style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
 
             <div style="float: right;margin-right: 10px;">
-            <button type="button" class="btn btn-primary" onclick="jsFun()">发送</button>
+            <button type="button" class="btn btn-primary" onclick="sendFun()">发送</button>
             </div>
 
             <div style="margin-top: 30px;">
@@ -109,6 +115,41 @@
                 <textarea id="result" class="form-control" rows="10" name=textarea></textarea>
             </div>
 
+            <div style="float: right;margin-right: 10px; margin-top: 15px">
+                <button type="button" class="btn btn-primary" onclick="assertFun()">断言</button>
+            </div>
+            <div style="margin-top: 25px">
+                <label>* 断言类型：</label>
+                <label class="radio-inline">
+                    <input type="radio" name="assert_type" id="contains" checked> 包含
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="assert_type" id="mathches"> 匹配
+                </label>
+            </div>
+             <div style="margin-top: 10px;">
+                <p>断言：</p>
+                <textarea id="assert" class="form-control" rows="5" name=textarea></textarea>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label>项目：</label>
+                <select class="selectpicker" id="project_name">
+                </select>
+
+                <label>模块：</label>
+                <select class="selectpicker" id="module_name">
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Barbecue</option>
+                </select>
+            </div>
+            <div style="float: right;">
+                <button type="button" 
+                class="btn btn-primary" 
+                onclick="saveFun()">保存</button>
+            </div>
+            
       <!--</div>-->
       {% endif %}
 
@@ -119,8 +160,13 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-    function jsFun(){
-        var url = $("#req_url").val();;
+
+    // 调用项目的初始化
+    PorjectInit("project_name")
+
+    //发送方法
+    function sendFun(){
+        var url = $("#req_url").val();
         var moethd = $('input[name="req_method"]:checked').val();
         var header = $("#header").val();
         var type = $('input[name="par_type"]:checked').val();
@@ -147,7 +193,35 @@
         });
         
     };
-    //
+
+    //断言方法
+    function assertFun(){
+
+        var assert_type = $('input[name="assert_type"]:checked').val();
+        var result_text  = $("#result").val();
+        var assert_text = $("#assert").val();
+        
+        console.log("得到的结果", result_text);
+        console.log("断言的结果", assert_text);
+
+        if (result_text === "" || assert_text === "") {
+            window.alert("要断言的文本不能为空");
+            return;
+        }
+
+        $.post("/testcase/assert",
+        {
+            result: result_text,
+            assert: assert_text,
+            assert_type: assert_type,
+        },
+        function (data, status) {
+            alert("提示：" + data.result);
+            console.log("返回的结果", data.result);
+        });
+
+    };
+
 
 </script>
 {% endblock %}

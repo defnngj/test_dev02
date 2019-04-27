@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from project_app.models import Project
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from project_app.froms import ProjectForm
 
 
@@ -75,3 +75,33 @@ def edit_project(request, pid):
             p.status = status
             p.save()
         return HttpResponseRedirect("/project/")
+
+
+def get_project_list(request):
+    """
+    接口：获取项目列表
+    """
+    if request.method == "GET":
+        projects = Project.objects.all()
+        project_list = []
+        for pro in projects:
+            project_dict = {
+                "id": pro.id,
+                "name": pro.name
+            }
+            project_list.append(project_dict)
+
+        return JsonResponse({"status": 10200,
+                             "message": "请求成功",
+                             "data": project_list})
+
+    else:
+        return JsonResponse({"status": 10101, "message": "请求方法错误"})
+
+#
+# {1: "测试平台", 2: "新项目BBB"}
+#
+# [
+# {"id":1, "name":"测试平台"},
+# {"id":2, "name":"新项目BBB"},
+#  ]
