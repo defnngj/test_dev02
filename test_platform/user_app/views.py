@@ -20,14 +20,11 @@ def index(request):
         username = request.POST.get("username", "")
         password = request.POST.get("password", "")
         if username == "" or password == "":
-            return render(request, "index.html", {
-                "error": "用户名或密码为空"})
+            return render(request, "index.html", {"error": "用户名或密码为空"})
 
         user = auth.authenticate(username=username, password=password)
-        print("user-->", user)
         if user is None:
-            return render(request, "index.html", {
-                "error": "用户名或密码错误"})
+            return render(request, "index.html", {"error": "用户名或密码错误"})
         else:
             auth.login(request, user)  # 记录用户的登录状态
             return HttpResponseRedirect("/project/")

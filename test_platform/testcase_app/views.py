@@ -15,12 +15,12 @@ def testcase_debug(request):
     """
     if request.method == "POST":
         url = request.POST.get("url", "")
-        moethd = request.POST.get("moethd", "")
+        method = request.POST.get("method", "")
         header = request.POST.get("header", "")
         type_ = request.POST.get("type", "")
         parameter = request.POST.get("parameter", "")
         print("url", url)
-        print("moethd", moethd)
+        print("method", method)
         print("header", header)
         print("type_", type_)
         print("parameter", parameter)
@@ -37,32 +37,33 @@ def testcase_debug(request):
         except json.decoder.JSONDecodeError:
             return JsonResponse({"result": "参数类型错误"})
 
-        if moethd == "get":
+        result_text = None
+        if method == "get":
             if header == "":
                 r = requests.get(url, params=payload)
-                print("结果", r.json())
+                result_text = r.text
             else:
                 r = requests.get(url, params=payload, headers=header)
-                print("结果", r.json())
+                result_text = r.text
 
-        if moethd == "post":
+        if method == "post":
             if type_ == "from":
                 if header == "":
                     r = requests.post(url, data=payload)
-                    print(r.text)
+                    result_text = r.text
                 else:
                     r = requests.post(url, data=payload, headers=header)
-                    print(r.text)
+                    result_text = r.text
 
             if type_ == "json":
                 if header == "":
                     r = requests.post(url, json=payload)
-                    print(r.text)
+                    result_text = r.text
                 else:
                     r = requests.post(url, json=payload, headers=header)
-                    print(r.text)
+                    result_text = r.text
 
-        return JsonResponse({"result": r.text})
+        return JsonResponse({"result": result_text})
     else:
         return JsonResponse({"result": "请求方法错误"})
 
@@ -84,7 +85,6 @@ def testcase_assert(request):
         if assert_type == "contains":
             assert_list = assert_text.split(">>")
             for assert_value in assert_list:
-                print("--->", assert_value)
                 if assert_value not in result_text:
                     return JsonResponse({"result": "断言失败"})
                 else:

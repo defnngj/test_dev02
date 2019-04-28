@@ -2,73 +2,82 @@
 {% block base %}
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-				aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">接口测试平台</a>
-		</div>
-		<div id="navbar" class="navbar-collapse collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Settings</a></li>
-				<li><a href="/logout/">logout</a></li>
-			</ul>
-			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" placeholder="Search...">
-			</form>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">接口测试平台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Settings</a></li>
+                <li><a href="/logout/">logout</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
 </nav>
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-sm-3 col-md-2 sidebar">
-			<ul class="nav nav-sidebar">
-				<li>
-					<a href="/project/">
-						<i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理
-					</a>
-				</li>
-				<li>
-					<a href="/module/">
-						<i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理
-					</a>
-				</li>
-			</ul>
-			<ul class="nav nav-sidebar">
-                <li><a href="/testcase/">
-                  <i class="glyphicon glyphicon-list-alt"></i>&nbsp&nbsp用例管理</a></li>
-                <li><a href="">
-                  <i class="glyphicon glyphicon-th-list"></i>&nbsp&nbsp任务管理</a></li>
-              </ul>
-              <ul class="nav nav-sidebar">
-                <li><a href="">
-                  <i class="glyphicon glyphicon-log-in"></i>&nbsp&nbspmock Server</a>
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li>
+                    <a href="/project/">
+                        <i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理
+                    </a>
                 </li>
-                <li><a href="">
-                  <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具</a>
+                <li>
+                    <a href="/module/">
+                        <i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理
+                    </a>
                 </li>
-              </ul>
-		</div>
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li>
+                    <a href="/testcase/">
+                        <i class="glyphicon glyphicon-list-alt"></i>&nbsp&nbsp用例管理
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="glyphicon glyphicon-th-list"></i>&nbsp&nbsp任务管理
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li>
+                    <a href="">
+                        <i class="glyphicon glyphicon-log-in"></i>&nbsp&nbspmock Server
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
-		<!--模块列表-->
-      {% if type == "debug" %}
-      <h4 class="sub-header">postman
-      </h4>
-      <!--<div class="table-responsive">-->
+            <!--模块列表-->
+            {% if type == "debug" %}
+            <h4 class="sub-header">postman</h4>
+
             <div class="input-group">
-                <span class="input-group-addon">* URL</span>
+                <span class="input-group-addon">URL</span>
                 <input id="req_url" type="text" class="form-control" value="http">
             </div>
 
-          <br>
+            <br>
             <div>
                 <label>* 请求方法：</label>
                 <label class="radio-inline">
@@ -80,14 +89,14 @@
                 <label class="radio-inline">
                     <input type="radio" name="req_method" id="put" value="put"> PUT
                 </label>
-                 <label class="radio-inline">
+                <label class="radio-inline">
                     <input type="radio" name="req_method" id="delete" value="delete"> DELETE
                 </label>
             </div>
 
             <div class="input-group">
                 <span class="input-group-addon">header</span>
-                <input id="header" type="text" class="form-control" value="{}" >
+                <input id="header" type="text" class="form-control" value="{}">
             </div>
 
             <div style="margin-top: 10px;">
@@ -102,12 +111,12 @@
 
             <div class="input-group">
                 <span class="input-group-addon">参数</span>
-                <input  value="{}" id="parameter" type="text" class="form-control">
+                <input value="{}" id="parameter" type="text" class="form-control">
             </div>
             <p style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
 
             <div style="float: right;margin-right: 10px;">
-            <button type="button" class="btn btn-primary" onclick="sendFun()">发送</button>
+                <button type="button" class="btn btn-primary" onclick="sendFun()">发送</button>
             </div>
 
             <div style="margin-top: 30px;">
@@ -127,7 +136,7 @@
                     <input type="radio" name="assert_type" id="mathches"> 匹配
                 </label>
             </div>
-             <div style="margin-top: 10px;">
+            <div style="margin-top: 10px;">
                 <p>断言：</p>
                 <textarea id="assert" class="form-control" rows="5" name=textarea></textarea>
             </div>
@@ -145,62 +154,59 @@
                 </select>
             </div>
             <div style="float: right;">
-                <button type="button" 
-                class="btn btn-primary" 
-                onclick="saveFun()">保存</button>
+                <button type="button" class="btn btn-primary" onclick="saveFun()">保存</button>
             </div>
-            
-      <!--</div>-->
-      {% endif %}
+
+            {% endif %}
 
 
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
     // 调用项目的初始化
-    PorjectInit("project_name")
+    ProjectInit("project_name")
 
     //发送方法
-    function sendFun(){
-        var url = $("#req_url").val();
-        var moethd = $('input[name="req_method"]:checked').val();
-        var header = $("#header").val();
-        var type = $('input[name="par_type"]:checked').val();
-        var parameter = $("#parameter").val();
+    function sendFun() {
+        let url = $("#req_url").val();
+        let method = $('input[name="req_method"]:checked').val();
+        let header = $("#header").val();
+        let type = $('input[name="par_type"]:checked').val();
+        let parameter = $("#parameter").val();
 
-        if(url === ""){
+        if (url === "") {
             window.alert("URL不能为空！");
             return;
         }
-        window.alert("parameter:"+parameter);
+        window.alert("parameter:" + parameter);
 
         $.post("/testcase/debug",
-        {
-            url: url,
-            moethd: moethd,
-            header: header,
-            type: type,
-            parameter: parameter,
-        },
-        function (data, status) {
-            alert("数据：" + data.result);
-            console.log("返回的结果", data.result);
-            document.querySelector("#result").value = data.result;
-        });
-        
+            {
+                url: url,
+                method: method,
+                header: header,
+                type: type,
+                parameter: parameter,
+            },
+            function (data, status) {
+                alert("数据：" + data.result);
+                console.log("返回的结果", data.result);
+                document.querySelector("#result").value = data.result;
+            });
+
     };
 
     //断言方法
-    function assertFun(){
+    function assertFun() {
 
         var assert_type = $('input[name="assert_type"]:checked').val();
-        var result_text  = $("#result").val();
+        var result_text = $("#result").val();
         var assert_text = $("#assert").val();
-        
+
         console.log("得到的结果", result_text);
         console.log("断言的结果", assert_text);
 
@@ -210,18 +216,19 @@
         }
 
         $.post("/testcase/assert",
-        {
-            result: result_text,
-            assert: assert_text,
-            assert_type: assert_type,
-        },
-        function (data, status) {
-            alert("提示：" + data.result);
-            console.log("返回的结果", data.result);
-        });
+            {
+                result: result_text,
+                assert: assert_text,
+                assert_type: assert_type,
+            },
+            function (data, status) {
+                alert("提示：" + data.result);
+                console.log("返回的结果", data.result);
+            });
 
     };
 
 
 </script>
+
 {% endblock %}

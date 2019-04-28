@@ -10,7 +10,7 @@ def project_manage(request):
     """
     项目管理
     """
-    project_all = Project.objects.all() #rpc  webserver soap
+    project_all = Project.objects.all()
     return render(request, "project.html", {"projects": project_all,
                                             "type": "list"})
 
@@ -90,18 +90,6 @@ def get_project_list(request):
                 "name": pro.name
             }
             project_list.append(project_dict)
-
-        return JsonResponse({"status": 10200,
-                             "message": "请求成功",
-                             "data": project_list})
-
+        return JsonResponse({"status": 10200, "message": "请求成功","data": project_list})
     else:
         return JsonResponse({"status": 10101, "message": "请求方法错误"})
-
-#
-# {1: "测试平台", 2: "新项目BBB"}
-#
-# [
-# {"id":1, "name":"测试平台"},
-# {"id":2, "name":"新项目BBB"},
-#  ]

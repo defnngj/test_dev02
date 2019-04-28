@@ -9,47 +9,44 @@
 <input type="text" id="number1">
 +
 <input type="text" id="number2">
-<button type="button" onclick="myFunction()">&nbsp;&nbsp;=&nbsp;&nbsp; </button>
+<button type="button" onclick="myFunction()">&nbsp;&nbsp;=&nbsp;&nbsp;</button>
 <textarea rows="3" cols="20" id="result">
 </textarea>
 
 <script type="text/javascript">
-    function myFunction()
-    {
+    function myFunction() {
         let number1 = document.querySelector("#number1").value;
         let number2 = document.querySelector("#number2").value;
         console.log("数字1", number1);
         console.log("数字2", number2);
 
-        if(number1 === ""){
+        if (number1 === "") {
             document.querySelector("#number1").style.border = "2px solid red";
             return;
-        }else{
+        } else {
             document.querySelector("#number1").style.border = "";
         }
         if (number2 === "") {
             document.querySelector("#number2").style.border = "2px solid red";
             return;
-        }else{
+        } else {
             document.querySelector("#number2").style.border = "";
         }
-        
+
         $.post("/js_jisuan/",
-         { num1: number1, num2: number2},
-         function (result) {
-            //alert("结果: "+ result);
-            if(result.status_code !== 10200){
-                document.querySelector("#result").value = result.message;    
-            } else {
-                document.querySelector("#result").value = result.data;
-            }
-        });
+            {num1: number1, num2: number2},
+            function (result) {
+                //alert("结果: "+ result);
+                if (result.status_code !== 10200) {
+                    document.querySelector("#result").value = result.message;
+                } else {
+                    document.querySelector("#result").value = result.data;
+                }
+            });
 
     }
 
 </script>
-
-
 
 
 </body>
