@@ -102,7 +102,7 @@
             <div style="margin-top: 10px;">
                 <label>* 参数类型：</label>
                 <label class="radio-inline">
-                    <input type="radio" name="par_type" id="from" value="from" checked> form-data
+                    <input type="radio" name="par_type" id="form" value="form" checked> form-data
                 </label>
                 <label class="radio-inline">
                     <input type="radio" name="par_type" id="json" value="json"> JSON
@@ -130,10 +130,10 @@
             <div style="margin-top: 25px">
                 <label>* 断言类型：</label>
                 <label class="radio-inline">
-                    <input type="radio" name="assert_type" id="contains" checked> 包含
+                    <input type="radio" name="assert_type" id="contains" value="contains" checked> 包含
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="assert_type" id="mathches"> 匹配
+                    <input type="radio" name="assert_type" id="mathches" value="mathches"> 匹配
                 </label>
             </div>
             <div style="margin-top: 10px;">
@@ -148,12 +148,15 @@
 
                 <label>模块：</label>
                 <select class="selectpicker" id="module_name">
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
                 </select>
             </div>
-            <div style="float: right;">
+
+            <div class="input-group" style="top:10px">
+                <span class="input-group-addon">名称</span>
+                <input id="case_name" type="text" class="form-control">
+            </div>
+            
+            <div style="float: right; margin-top: 20px;">
                 <button type="button" class="btn btn-primary" onclick="saveFun()">保存</button>
             </div>
 
@@ -165,10 +168,19 @@
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
 
     // 调用项目的初始化
-    ProjectInit("project_name")
+    ProjectInit("project_name");
+
+    //监听项目列表的变化
+    $("#project_name").change(function () {
+        let project_id = $(this).children('option:selected').val();
+        console.log("选择的项目id", project_id);
+        ModuleInit("module_name", project_id);
+    });
 
     //发送方法
     function sendFun() {
@@ -206,7 +218,7 @@
         var assert_type = $('input[name="assert_type"]:checked').val();
         var result_text = $("#result").val();
         var assert_text = $("#assert").val();
-
+        console.log("断言的类型额", assert_type);
         console.log("得到的结果", result_text);
         console.log("断言的结果", assert_text);
 
@@ -228,6 +240,58 @@
 
     };
 
+    //保存用例
+    function saveFun() {
+
+        //接口的基本数据
+        let url = $("#req_url").val();
+        let method = $('input[name="req_method"]:checked').val();
+        let header = $("#header").val();
+        let parameter_type = $('input[name="par_type"]:checked').val();
+        let parameter_body = $("#parameter").val();
+
+        // 断言的数据
+        var assert_type = $('input[name="assert_type"]:checked').val();
+        var assert_text = $("#assert").val();
+
+        // 保存的数据
+        let module_id = $('select[id="module_name"]').val();
+        let case_name = $("#case_name").val();
+
+        if (url === "") {
+            window.alert("URL不能为空！");
+            return;
+        }else if (assert_type == "" || assert_text === ""){
+            window.alert("断言的类型或参数不能为空！");
+            return;
+        }
+        else if(case_name == ""){
+            window.alert("用例名称不能为空！");
+            return;
+        } else if (module_id == "") {
+            window.alert("所属模块不能为空！");
+            return;
+        }
+
+        window.alert("parameter:" + parameter);
+
+        $.post("/testcase/save_case",
+        {
+            url: url,
+            method: method,
+            header: header,
+            par_type: parameter_type,
+            par_body: parameter_body,
+            ass_type: assert_type,
+            ass_text: assert_text,
+            mid: module_id,
+            name: case_name, 
+        },
+        function (data) {
+            console.log("返回的结果", data);
+            window.alert(data.message);
+        });
+    };
 
 </script>
 

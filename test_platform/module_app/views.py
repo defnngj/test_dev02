@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from module_app.models import Module
 from module_app.forms import ModuleForm
@@ -73,3 +73,27 @@ def delete_module(request, mid):
         return HttpResponseRedirect("/module/")
     else:
         return HttpResponseRedirect("/module/")
+
+
+def get_module_list(request):
+    """
+    接口：根据项目id,返回对应的模块列表
+    """
+    if request.method == "POST":
+        pid = request.POST.get("pid", "")
+        if pid == "":
+            return JsonResponse({"status": 10102, 
+            "message": "项目id不能空"})
+        
+        modules = Module.objects.filter(project=pid)
+        module_list = []
+        for mod in modules:
+            module_dict = {
+                "id": mod.id,
+                "name": mod.name
+            }
+            module_list.append(module_dict)
+        return JsonResponse({"status": 10200, "message": "请求成功",
+         "data": module_list})
+    else:
+        return JsonResponse({"status": 10101, "message": "请求方法错误"})

@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.testcase_manage),
     path('debug', views.testcase_debug),
     path('assert', views.testcase_assert),
+    path('save_case', views.testcase_save),
 
 
 ]
