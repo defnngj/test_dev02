@@ -67,10 +67,8 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-
-            <!--模块列表-->
-            {% if type == "debug" %}
-            <h4 class="sub-header">postman</h4>
+            <!--添加用例-->
+            <h4 class="sub-header">添加用例</h4>
 
             <div class="input-group">
                 <span class="input-group-addon">URL</span>
@@ -143,7 +141,8 @@
 
             <div style="margin-top: 20px;">
                 <label>项目：</label>
-                <select class="selectpicker" id="project_name">
+                <select class="selectpicker" id="project_name" >
+                    <option value="0">请选择</option>
                 </select>
 
                 <label>模块：</label>
@@ -159,9 +158,6 @@
             <div style="float: right; margin-top: 20px;">
                 <button type="button" class="btn btn-primary" onclick="saveFun()">保存</button>
             </div>
-
-            {% endif %}
-
 
         </div>
     </div>

@@ -3,10 +3,27 @@ from django.http import HttpResponse, JsonResponse
 import requests
 import json
 from testcase_app.models import TestCase
+from module_app.models import Module
 
-# Create your views here.
+
 def testcase_manage(request):
-    return render(request, "testcase.html", {"type": "debug"})
+    """ 用例列表"""
+    case_list = TestCase.objects.all()
+
+    return render(request, "case_list.html", {"cases": case_list})
+
+
+def add_case(request):
+    """
+    添加用例
+    """
+    return render(request, "case_add.html", )
+
+
+def edit_case(request, cid):
+    """编辑用例"""
+    print("编辑的用例id", cid)
+    return render(request, "case_edit.html",)
 
 
 def testcase_debug(request):
@@ -47,7 +64,7 @@ def testcase_debug(request):
                 result_text = r.text
 
         if method == "post":
-            if type_ == "from":
+            if type_ == "form":
                 if header == "":
                     r = requests.post(url, data=payload)
                     result_text = r.text
@@ -171,5 +188,34 @@ def testcase_save(request):
     else:
         return JsonResponse({"status": 10100, "message": "请求方法错误"})
 
+
+
+def get_case_info(request):
+    """获取接口数据"""
+    if request.method == "POST":
+        cid = request.POST.get("cid", "")
+        case = TestCase.objects.get(id=cid)
+        module = Module.objects.get(id=case.module.id)
+        project_id = module.project.id;
+
+        case_dict = {
+            "id": case.id,
+            "url": case.url,
+            "name": case.name,
+            "method": case.method,
+            "header": case.header,
+            "parameter_type": case.parameter_type,
+            "parameter_body": case.parameter_body,
+            "assert_type": case.assert_type,
+            "assert_text": case.assert_text,
+            "module_id": case.module.id,
+            "project_id": project_id,
+        }
+        return JsonResponse({"status": 10200,
+                             "message": "请求成功",
+                             "data": case_dict})
+
+    else:
+        return JsonResponse({"status": 10100, "message": "请求方法错误"})
 
 
