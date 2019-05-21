@@ -140,13 +140,14 @@
             </div>
 
             <div style="margin-top: 20px;">
-                <label>项目：</label>
-                <select class="selectpicker" id="project_name" >
-                    <option value="0">请选择</option>
+                <label style="float: left">项目：</label>
+                <select class="form-control select2-single" id="selectProject" 
+                        style="width: 180px">
                 </select>
 
-                <label>模块：</label>
-                <select class="selectpicker" id="module_name">
+                <label style="float: left">模块：</label>
+                <select class="form-control select2-single" id="selectModule"
+                        style="width: 180px">
                 </select>
             </div>
 
@@ -164,19 +165,27 @@
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/js/bootstrap-select.min.js"></script> -->
 <script type="text/javascript">
 
     // 调用项目的初始化
-    ProjectInit("project_name");
+   // ProjectInit("project_name");
 
     //监听项目列表的变化
-    $("#project_name").change(function () {
-        let project_id = $(this).children('option:selected').val();
-        console.log("选择的项目id", project_id);
-        ModuleInit("module_name", project_id);
-    });
+    // $("#project_name").change(function () {
+    //     let project_id = $(this).children('option:selected').val();
+    //     console.log("选择的项目id", project_id);
+    //     ModuleInit("module_name", project_id);
+    // });
+
+    SelectInit();
 
     //发送方法
     function sendFun() {

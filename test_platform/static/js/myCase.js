@@ -1,4 +1,95 @@
-//创建下拉选项
+
+
+//初始化 “项目>模块” 二级联动菜单
+var SelectInit = function (defaultProjectId, defaultModuleId) {
+    var cmbProject = document.getElementById("selectProject");
+    var cmbModule = document.getElementById("selectModule");
+    var dataList = [];
+    console.log("wtf", cmbProject);
+
+    //设置默认选项
+    function setDefaultOption(obj, id) {
+        for (var i = 0; i < obj.options.length; i++) {
+            if (obj.options[i].value == id) {
+                obj.selectedIndex = i;
+                return;
+            }
+        }
+    }
+
+    //创建下拉选项
+    function addOption(cmb, obj) {
+        var option = document.createElement("option");
+        cmb.options.add(option);
+        option.innerHTML = obj.name;
+        option.value = obj.id;
+    }
+
+    //改变项目
+    function changeProject() {
+        cmbModule.options.length = 0;
+        if (cmbProject.selectedIndex == -1) {
+            return;
+        }
+        var pid = cmbProject.options[cmbProject.selectedIndex].value;
+        
+        for (let i = 0; i < dataList.length; i++) {
+            if(dataList[i].id == pid) {
+                let modules = dataList[i].moduleList;
+                for(let j=0; j< modules.length; j++){
+                    addOption(cmbModule, modules[j]);
+                }
+            }
+            
+        }
+
+        setDefaultOption(cmbModule, defaultModuleId);
+    }
+
+    function getSelectData() {
+        // 调用获取select数据列表
+        $.get("/testcase/get_select_data", {}, function (resp) {
+            if (resp.status === 10200) {
+                dataList = resp.data;
+                //遍历项目
+                for (var i = 0; i < dataList.length; i++) {
+                    addOption(cmbProject, dataList[i]);
+                }
+
+                setDefaultOption(cmbProject, defaultProjectId);
+                changeProject();
+                cmbProject.onchange = changeProject;
+            }
+
+            setDefaultOption(cmbProject, defaultProjectId);
+
+        });
+    }
+
+    // 调用getSelectData函数
+    getSelectData();
+
+};
+
+/////////接口需要的数据格式////////////////////
+// {
+//     "id": 2,
+//     "name": "新项目BBB",
+//     "moduleList": [
+//        {
+//         "id": 4,
+//         "name": "模块AA"
+//        },
+//        {
+//         "id": 5,
+//         "name": "模块BB"
+//        }
+//     ]
+// },
+////////////////////////////////////////////
+
+
+//创建下拉选项 -->废弃
 function cmbAddOption(cmb, obj) {
     let option = document.createElement("option");
     cmb.options.add(option);
@@ -6,7 +97,7 @@ function cmbAddOption(cmb, obj) {
     option.value = obj.id;
 }
 
-//清理下拉选项
+//清理下拉选项 -->废弃
 function clearOption(cmb) {
     for (let i = 0; i <= cmb.length; i++) {
         cmb.options.remove(cmb[i]);
@@ -14,11 +105,11 @@ function clearOption(cmb) {
 }
 
 
-// 获取项目列表
-var ProjectInit = function (_cmbProject, defaultId) {
+// 获取项目列表 -->废弃
+var ProjectInit = function (_cmbProject) {
     var cmbProject = document.getElementById(_cmbProject);
-    
-    console.log("defaultId--->", defaultId);
+
+    console.log("初始化项目...");
 
     function getProjectListInfo() {
         $.get("/project/get_project_list/", {}, function (resp) {
@@ -36,15 +127,17 @@ var ProjectInit = function (_cmbProject, defaultId) {
 
     // 调用getCaseListInfo函数
     getProjectListInfo();
+
+    //ModuleInit(1);
     
-    //document.getElementById("sel")[2].selected = true;
-    
-    
+
 };
 
 
-// 获取某一个项目的模块列表
+// 获取某一个项目的模块列表 -->废弃
 var ModuleInit = function (_cmbModule, pid) {
+    console.log("初始化模块...", pid);
+
     var cmbModule = document.getElementById(_cmbModule);
 
     function getModuleListInfo() {
@@ -52,17 +145,18 @@ var ModuleInit = function (_cmbModule, pid) {
             "pid": pid
         }, function (resp) {
             if (resp.status == 10200) {
-                console.log(resp.data);
+                console.log("6666666", resp.data);
                 let dataList = resp.data;
                 clearOption(cmbModule);
                 for (let i = 0; i < dataList.length; i++) {
                     cmbAddOption(cmbModule, dataList[i]);
                 }
-                $("#module_name").selectpicker("refresh");
+                //$("#module_name").selectpicker("refresh");
             } else {
                 window.alert(resp.message);
             }
         });
+
     }
 
     // 调用getCaseListInfo函数
@@ -71,22 +165,6 @@ var ModuleInit = function (_cmbModule, pid) {
 };
 
 
-var SelectModule = function (mid) {
-    
-        let options2 = document.querySelectorAll("#module_name > option");
-        console.log("bbbb", options2.length);
-        for (let i = 0; i < options2.length; i++) {
-            let v2 = options2[i].value;
-            if (v2 == mid) {
-                console.log("所属模块的id---》", v2);
-                options2[i].selected = true;
-                let text = options2[i].text;
-                console.log("所属的模块名称---》", text);
-                document.querySelectorAll(".filter-option-inner-inner")[1].innerText = text;
-            }
-
-        }
-}
 
 //获取用例信息
 var TestCaseInit = function () {
@@ -100,62 +178,74 @@ var TestCaseInit = function () {
     },
     function (resp, status) {
         console.log("返回的结果", resp.data);
-        
-        //url
+        var result = resp.data;
+
+        //请求URL
         document.querySelector("#req_url").value = resp.data.url;
         
-        // 请求方法
-        if (resp.data.method == 1){
+        //请求方法
+        if (result.method == 1){
             document.querySelector("#get").setAttribute("checked", "");
-        }
-        else if (resp.data.method == 2) {
+        }else if (result.method == 2) {
             document.querySelector("#post").setAttribute("checked", "");
+        }else if (result.method == 3){
+            document.querySelector("#put").setAttribute("checked", "");
+        } else if (result.method == 4){
+            document.querySelector("#delete").setAttribute("checked", "");
         }
+
         //请求头
-        document.querySelector("#header").value = resp.data.header;
+        document.querySelector("#header").value = result.header;
 
         //请求参数类型
-        if (resp.data.parameter_type == 1) {
+        if (result.parameter_type == 1) {
             document.querySelector("#form").setAttribute("checked", "");
         }
-        else if (resp.data.parameter_type == 2) {
+        else if (result.parameter_type == 2) {
             document.querySelector("#json").setAttribute("checked", "");
         }
 
         //请求参数的值
-        document.querySelector("#parameter").value = resp.data.parameter_body;
+        document.querySelector("#parameter").value = result.parameter_body;
         
         //断言的类型
-        if (resp.data.assert_type == 1) {
+        if (result.assert_type == 1) {
             document.querySelector("#contains").setAttribute("checked", "");
         }
-        else if (resp.data.assert_type == 2) {
+        else if (result.assert_type == 2) {
             document.querySelector("#mathches").setAttribute("checked", "");
         }
 
         //断言的值
-        document.querySelector("#assert").value = resp.data.assert_text;
+        document.querySelector("#assert").value = result.assert_text;
 
         //用例的名称
-        document.querySelector("#case_name").value = resp.data.name;
+        document.querySelector("#case_name").value = result.name;
 
-        let options = document.querySelectorAll("#project_name > option");
-        console.log("aaaa", options.length);
-        for (let i = 0; i < options.length; i++) {
-            let v = options[i].value;
-            if (v == resp.data.project_id){
-                console.log("所属的项目id---》", v);
-                options[i].selected = true;
-                let text = options[i].text;
-                console.log("所属的项目名称---》", text);
-                document.querySelectorAll(".filter-option-inner-inner")[0].innerText = text;
-            }
-        }
+        // 初始化菜单
+        SelectInit(result.project_id, result.module_id);
 
-        ModuleInit("module_name", resp.data.project_id);
+        // 初始化用例所属项目
+        // let options = document.querySelectorAll("#project_name > option");
+        // for (let i = 0; i < options.length; i++) {
+        //     let optionValue = options[i].value;
+        //     if (optionValue == result.project_id) {
+        //         options[i].selected = true;
+        //         //let optionName = options[i].text;
+        //         //document.querySelectorAll(".filter-option-inner-inner")[0].innerText = optionName;
+        //     }
+        // }
 
-        SelectModule(resp.data.module_id);
 
+        // ModuleInit("module_name", result.project_id);
+        // //location.replace(location.href);
+
+        // SelectModule(result.module_id);
     });
+
+    
+
+
+    //SelectModule(result.module_id);
     
 }

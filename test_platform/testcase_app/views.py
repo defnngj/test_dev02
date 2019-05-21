@@ -4,6 +4,7 @@ import requests
 import json
 from testcase_app.models import TestCase
 from module_app.models import Module
+from project_app.models import Project
 
 
 def testcase_manage(request):
@@ -21,8 +22,9 @@ def add_case(request):
 
 
 def edit_case(request, cid):
-    """编辑用例"""
-    print("编辑的用例id", cid)
+    """
+    编辑用例
+    """
     return render(request, "case_edit.html",)
 
 
@@ -189,6 +191,38 @@ def testcase_save(request):
         return JsonResponse({"status": 10100, "message": "请求方法错误"})
 
 
+def get_select_data(request):
+    """
+    获取 "项目>模块" 列表
+    :param request:
+    :return: 项目接口列表
+    """
+    if request.method == "GET":
+        project_list = Project.objects.all()
+        data_list = []
+        for project in project_list:
+            project_dict = {
+                "id": project.id,
+                "name": project.name
+            }
+
+            module_list = Module.objects.filter(project_id=project.id)
+            module_name = []
+            for module in module_list:
+                module_name.append({
+                    "id": module.id,
+                    "name": module.name,
+                })
+
+            project_dict["moduleList"] = module_name
+            data_list.append(project_dict)
+
+        return JsonResponse({"status": 10200, "message": "success", "data": data_list})
+
+    else:
+        return JsonResponse({"status": 10100, "message": "请求方法错误"})
+
+
 
 def get_case_info(request):
     """获取接口数据"""
@@ -211,9 +245,7 @@ def get_case_info(request):
             "module_id": case.module.id,
             "project_id": project_id,
         }
-        return JsonResponse({"status": 10200,
-                             "message": "请求成功",
-                             "data": case_dict})
+        return JsonResponse({"status": 10200, "message": "请求成功", "data": case_dict})
 
     else:
         return JsonResponse({"status": 10100, "message": "请求方法错误"})
