@@ -1,0 +1,75 @@
+{% extends "task_list.html" %}
+{% block taskadd %}
+
+	<div>
+		<!--添加任务-->
+		<h4 class="sub-header">添加任务</h4>
+
+		<div style="margin-top: 30px;">
+			<p>名称：</p>
+			<input id="name" class="form-control"></textarea>
+		</div>
+
+		<div style="margin-top: 10px;">
+			<p>描述：</p>
+			<textarea id="desc" class="form-control" rows="3" name=textarea></textarea>
+		</div>
+
+		<div style="margin-top: 10px;">
+			<p>用例：</p>
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+
+		<div style="float: right; margin-top: 20px;">
+			<button type="button" class="btn btn-primary" onclick="saveFun()">保存</button>
+		</div>
+
+	</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<link href="http://cdn.bootcss.com/zTree.v3/3.5.23/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>
+<script type="text/javascript">
+
+	var zTreeObj;
+	// zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+	var setting = {
+		check: {
+			enable: true,
+			chkStyle: 'checkbox'
+		}
+	};
+
+	// zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+	var zNodes = [
+		{
+			name: "项目1", 
+			open: true, 
+			children: [
+				{ name: "模块AAA", open: true, 
+					children: [
+							{ name: "用例001" },
+							{ name: "用例002" }
+						]
+				}, 
+				{ name: "模块BBB" }
+			]
+		},
+		{
+			name: "项目2", open: true, children: [
+				{ name: "模块001" }, { name: "模块002" }
+			]
+		}
+	];
+
+	$(document).ready(function () {
+		zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	});
+
+
+
+</script>
+
+{% endblock %}

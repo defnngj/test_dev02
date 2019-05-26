@@ -47,7 +47,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="/testtask/">
                             <i class="glyphicon glyphicon-th-list"></i>&nbsp&nbsp任务管理
                         </a>
                     </li>
@@ -113,6 +113,33 @@
                     </table>
                 </div>
 
+                <!-- 分页器 -->
+                <div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li>
+                                {% if cases.has_previous %}
+                                    <a href="?page={{ cases.previous_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                {% endif %}
+                            </li>
+
+                            <li><a href="#">{{ cases.number }}</a></li>
+
+                            {% if cases.has_next %}
+                                <li>
+                                    <a href="?page={{ cases.next_page_number }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            <li><a href="#">共：{{ cases.paginator.num_pages }} 页</a></li>
+  
+                        </ul>
+                    </nav>
+                </div>
 
             </div>
         </div>

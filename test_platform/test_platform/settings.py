@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'module_app',
     'js_demo',
     'testcase_app',
+    'testtask_app',
 ]
 
 MIDDLEWARE = [

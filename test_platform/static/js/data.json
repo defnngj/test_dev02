@@ -1,0 +1,59 @@
+{
+	"status": 10200,
+	"message": "success",
+	"data": 
+	[
+		{
+			"id": 1,
+			"name": "测试平台",
+			"moduleList": [
+				{
+					"id": 1,
+					"name": "模块1"
+				}
+			]
+		},
+
+
+		{
+			"id": 2,
+			"name": "新项目BBB",
+			
+			"moduleList": 
+			[
+				{
+					"id": 4,
+					"name": "模块AA"
+				},
+
+				{
+					"id": 5,
+					"name": "模块BB"
+				}
+			]
+
+		},
+
+
+
+		{
+			"id": 3,
+			"name": "旧平台AAA",
+			"moduleList": [
+				{
+					"id": 2,
+					"name": "模块001"
+				},
+				{
+					"id": 3,
+					"name": "模块002"
+				}
+			]
+		},
+		{
+			"id": 4,
+			"name": "空模块项目",
+			"moduleList": []
+		}
+	]
+}

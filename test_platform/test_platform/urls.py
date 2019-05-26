@@ -37,6 +37,8 @@ urlpatterns = [
     path('module/', include('module_app.urls')),
     # 用例管理
     path('testcase/', include('testcase_app.urls')),
+    # 任务管理
+    path('testtask/', include('testtask_app.urls')),
 
     # js例子--删除
     path('js/', js_views.index),
