@@ -1,6 +1,7 @@
 *.pyc
 *.log
 logs/
+mov/
 .idea/
 __pycache__/
 *.sqlite3
