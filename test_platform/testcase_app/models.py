@@ -8,6 +8,7 @@ class TestCase(models.Model):
     """
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     name = models.CharField("名称", max_length=50, null=False)
+    #status = models.BooleanField("状态", default=True)   # 控制用例的删除
     url = models.TextField("URL", null=False) 
     # 1:GET, 2: POST, 3:DELETE, 4:PUT
     method = models.IntegerField("请求方法", null=False)
