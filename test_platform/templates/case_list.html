@@ -70,10 +70,19 @@
 
                 <!--用例列表-->
                 <h4 class="sub-header">用例列表
+                    
                     <button type="button" class="btn btn-sm btn-primary" style="float: right;"
                             onclick="location.href='/testcase/add_case/'">创建
                     </button>
                 </h4>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <form class="navbar-form" method="get" action="/testcase/search_name/">
+                        <div class="form-group">
+                            <input name="caseName" type="text" placeholder="名称" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success">搜索</button>
+                    </form>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -119,7 +128,7 @@
                         <ul class="pagination">
                             <li>
                                 {% if cases.has_previous %}
-                                    <a href="?page={{ cases.previous_page_number }}" aria-label="Previous">
+                                    <a href="?caseName={{name}}&page={{ cases.previous_page_number }}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 {% endif %}
@@ -129,7 +138,7 @@
 
                             {% if cases.has_next %}
                                 <li>
-                                    <a href="?page={{ cases.next_page_number }}" aria-label="Next">
+                                    <a href="?caseName={{name}}&page={{ cases.next_page_number }}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
