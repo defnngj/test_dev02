@@ -11,7 +11,7 @@ from project_app.models import Project
 
 def testcase_manage(request):
     """ 用例列表"""
-    case_list = TestCase.objects.all()
+    case_list = TestCase.objects.get_queryset().order_by('id')
     p = Paginator(case_list, 3)
 
     page = request.GET.get('page')
