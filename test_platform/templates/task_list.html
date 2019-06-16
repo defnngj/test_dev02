@@ -105,7 +105,6 @@
 
 							<td>{{ task.create_time | date:"Y-m-d H:i:s" }}</td>
 							<td>
-								
 								<a href="/testtask/edit_task/{{task.id}}/" style="margin-right: 8px;">
 									<span class="glyphicon glyphicon-edit"></span>
 								</a>
@@ -147,5 +146,27 @@
 		</div>
 	</div>
 </div>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+	//发送方法
+	function RunTask(tid) {
+		console.log("运行任务的id", tid);
+
+		$.post("/testtask/run_task/",
+		{
+			task_id: tid,
+		},
+		function (data, status) {
+			alert("提示：" + data.message);
+		});
+
+	};
+
+
+</script>
+
+
 
 {% endblock %}

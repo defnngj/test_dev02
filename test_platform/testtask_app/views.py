@@ -1,4 +1,5 @@
 import json
+import os
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect
 from project_app.models import Project
@@ -175,3 +176,62 @@ def get_case_tree(request):
 			data_list.append(project_dict)
 		task_data["cases"] = data_list
 		return JsonResponse({"status": 10200, "message": "success", "data": task_data})
+
+
+def run_task(request):
+	""" 运行任务 """
+	if request.method == "POST":
+		tid = request.POST.get("task_id", "")
+		if tid == "":
+			return JsonResponse({"status": 10200, "message": "task id is null"})
+		task = TestTask.objects.get(id=tid)
+		print(task.cases)
+		print("--->", list(task.cases))
+		case_list = json.loads(task.cases)
+		print("===>", case_list)
+		test_data = {}
+		for cid in case_list:
+			print("wtf", cid)
+			case = TestCase.objects.get(id=cid)
+			if case.method == 1:
+				method = "get"
+			elif case.method == 2:
+				method = "post"
+			else:
+				method = "null"
+			
+			if case.parameter_type == 1:
+				parameter_type = "from"
+			else:
+				parameter_type = "json"
+
+			if case.assert_type == 1:
+				assert_type = "contains"
+			else:
+				assert_type = "mathches"
+			
+			test_data[case.id] = {
+				"url": case.url,
+				"method": method,
+				"header": case.header,
+				"parameter_type": parameter_type,
+				"parameter_body": case.parameter_body,
+				"assert_type": assert_type,
+				"assert_text": case.assert_text,
+			}
+		print("任务下面的用例", json.dumps(test_data))
+		case_data = json.dumps(test_data)
+
+		from test_platform import settings
+		
+		EXTEND_DIR = settings.BASE_DIR + "\\testtask_app\\extend\\"
+		print("项目的基本路径", EXTEND_DIR)
+		with(open(EXTEND_DIR + "test_data_list.json", "w")) as f:
+			f.write(case_data)
+		run_cmd = "pytest -vs " + EXTEND_DIR+ "run_task.py --junitxml="+EXTEND_DIR+"log.xml"
+		print("运行的命令", run_cmd)
+		os.system(run_cmd)
+		return JsonResponse({"status": 10200, "message": "任务执行完成"})
+	else:
+		return JsonResponse({"status": 10200, "message": "success", "data": task_data})
+
