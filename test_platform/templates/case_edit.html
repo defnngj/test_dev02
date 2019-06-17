@@ -84,12 +84,6 @@
                 <label class="radio-inline">
                     <input type="radio" name="req_method" id="post" value="post"> POST
                 </label>
-                <label class="radio-inline">
-                    <input type="radio" name="req_method" id="put" value="put"> PUT
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="req_method" id="delete" value="delete"> DELETE
-                </label>
             </div>
 
             <div class="input-group">
@@ -174,7 +168,7 @@
     TestCaseInit();
 
 
-    发送方法
+    //发送方法
     function sendFun() {
         let url = $("#req_url").val();
         let method = $('input[name="req_method"]:checked').val();
@@ -186,7 +180,7 @@
             window.alert("URL不能为空！");
             return;
         }
-        window.alert("parameter:" + parameter);
+        //window.alert("parameter:" + parameter);
 
         $.post("/testcase/debug",
             {
@@ -197,7 +191,6 @@
                 parameter: parameter,
             },
             function (data, status) {
-                alert("数据：" + data.result);
                 console.log("返回的结果", data.result);
                 document.querySelector("#result").value = data.result;
             });
@@ -210,9 +203,6 @@
         var assert_type = $('input[name="assert_type"]:checked').val();
         var result_text = $("#result").val();
         var assert_text = $("#assert").val();
-        console.log("断言的类型额", assert_type);
-        console.log("得到的结果", result_text);
-        console.log("断言的结果", assert_text);
 
         if (result_text === "" || assert_text === "") {
             window.alert("要断言的文本不能为空");

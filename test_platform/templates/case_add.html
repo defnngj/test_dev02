@@ -84,12 +84,6 @@
                 <label class="radio-inline">
                     <input type="radio" name="req_method" id="post" value="post"> POST
                 </label>
-                <label class="radio-inline">
-                    <input type="radio" name="req_method" id="put" value="put"> PUT
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="req_method" id="delete" value="delete"> DELETE
-                </label>
             </div>
 
             <div class="input-group">
@@ -185,7 +179,6 @@
             window.alert("URL不能为空！");
             return;
         }
-        window.alert("parameter:" + parameter);
 
         $.post("/testcase/debug",
             {
@@ -196,7 +189,6 @@
                 parameter: parameter,
             },
             function (data, status) {
-                alert("数据：" + data.result);
                 console.log("返回的结果", data.result);
                 document.querySelector("#result").value = data.result;
             });

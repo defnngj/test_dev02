@@ -77,54 +77,41 @@ def testcase_debug(request):
     测试用例的调试
     """
     if request.method == "POST":
-        url = request.POST.get("url", "")
-        method = request.POST.get("method", "")
-        header = request.POST.get("header", "")
-        type_ = request.POST.get("type", "")
-        parameter = request.POST.get("parameter", "")
-        print("url", url)
-        print("method", method)
-        print("header", header)
-        print("type_", type_)
-        print("parameter", parameter)
+        url = request.POST.get("url", "")             # URL
+        method = request.POST.get("method", "")       # 方法
+        header = request.POST.get("header", "")       # header
+        par_type = request.POST.get("type", "")       # 参数类型
+        par_body = request.POST.get("parameter", "")  # 参数
 
-        json_header = header.replace("\'", "\"")
+        if header == "":
+            header = "{}"
+
         try:
-            header = json.loads(json_header)
+            header = json.loads(header.replace("\'", "\""))
         except json.decoder.JSONDecodeError:
             return JsonResponse({"result": "header类型错误"})
 
-        json_par = parameter.replace("\'", "\"")
+        if par_body == "":
+            par_body = "{}"
+
         try:
-            payload = json.loads(json_par)
+            payload = json.loads(par_body.replace("\'", "\""))
         except json.decoder.JSONDecodeError:
             return JsonResponse({"result": "参数类型错误"})
 
         result_text = None
         if method == "get":
-            if header == "":
-                r = requests.get(url, params=payload)
-                result_text = r.text
-            else:
-                r = requests.get(url, params=payload, headers=header)
-                result_text = r.text
+            r = requests.get(url, params=payload, headers=header)
+            result_text = r.text
 
         if method == "post":
-            if type_ == "form":
-                if header == "":
-                    r = requests.post(url, data=payload)
-                    result_text = r.text
-                else:
-                    r = requests.post(url, data=payload, headers=header)
-                    result_text = r.text
+            if par_type == "form":
+                r = requests.post(url, data=payload, headers=header)
+                result_text = r.text
 
-            if type_ == "json":
-                if header == "":
-                    r = requests.post(url, json=payload)
-                    result_text = r.text
-                else:
-                    r = requests.post(url, json=payload, headers=header)
-                    result_text = r.text
+            if par_type == "json":
+                r = requests.post(url, json=payload, headers=header)
+                result_text = r.text
 
         return JsonResponse({"result": result_text})
     else:
@@ -142,8 +129,6 @@ def testcase_assert(request):
 
         if result_text == "" or assert_text == "":
             return JsonResponse({"result": "断言的文本不能为空"})
-
-        print("断言类型", assert_type)
 
         if assert_type == "contains":
             assert_list = assert_text.split(">>")
