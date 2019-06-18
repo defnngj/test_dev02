@@ -1,1 +1,20 @@
-{"3": {"url": "http://httpbin.org/post", "method": "post", "header": "{}", "parameter_type": "from", "parameter_body": "{'key':'value'}", "assert_type": "contains", "assert_text": "113.89.239.241"}, "10": {"url": "https://api.github.com/events", "method": "get", "header": "{}", "parameter_type": "from", "parameter_body": "{}", "assert_type": "contains", "assert_text": "github"}}
+{
+	"3": {
+		"url": "http://httpbin.org/post",
+		"method": "post",
+		"header": "{}",
+		"parameter_type": "from",
+		"parameter_body": "{'key':'value'}",
+		"assert_type": "contains",
+		"assert_text": "113.89.239.241"
+	},
+	"10": {
+		"url": "https://api.github.com/events",
+		"method": "get",
+		"header": "{}",
+		"parameter_type": "from",
+		"parameter_body": "{}",
+		"assert_type": "contains",
+		"assert_text": "github"
+	}
+}
