@@ -167,39 +167,35 @@
     //TestCase初始化
     TestCaseInit();
 
-
     //发送方法
     function sendFun() {
-        let url = $("#req_url").val();
-        let method = $('input[name="req_method"]:checked').val();
-        let header = $("#header").val();
-        let type = $('input[name="par_type"]:checked').val();
-        let parameter = $("#parameter").val();
+        var url = $("#req_url").val();
+        var method = $('input[name="req_method"]:checked').val();
+        var header = $("#header").val();
+        var type = $('input[name="par_type"]:checked').val();
+        var parameter = $("#parameter").val();
 
         if (url === "") {
             window.alert("URL不能为空！");
             return;
         }
-        //window.alert("parameter:" + parameter);
 
-        $.post("/testcase/debug",
-            {
+        window.alert("已发送请求！");
+
+        $.post("/testcase/debug", {
                 url: url,
                 method: method,
                 header: header,
                 type: type,
-                parameter: parameter,
-            },
-            function (data, status) {
-                console.log("返回的结果", data.result);
-                document.querySelector("#result").value = data.result;
+                parameter: parameter
+            }, function (resp) {
+                document.querySelector("#result").value = resp.result;
             });
 
-    };
+    }
 
     //断言方法
     function assertFun() {
-
         var assert_type = $('input[name="assert_type"]:checked').val();
         var result_text = $("#result").val();
         var assert_text = $("#assert").val();
@@ -209,38 +205,34 @@
             return;
         }
 
-        $.post("/testcase/assert",
-            {
-                result: result_text,
-                assert: assert_text,
-                assert_type: assert_type,
-            },
-            function (data, status) {
-                alert("提示：" + data.result);
-                console.log("返回的结果", data.result);
-            });
-
-    };
+        $.post("/testcase/assert", {
+            result: result_text,
+            assert: assert_text,
+            assert_type: assert_type,
+        }, function (resp) {
+            console.log("返回的结果", resp.result);
+        });
+    }
 
     //保存用例
     function saveFun() {
-        let local_url = document.location;
-        let cid = local_url.pathname.split("/")[3];
+        var local_url = document.location;
+        var cid = local_url.pathname.split("/")[3];
 
         //接口的基本数据
-        let url = $("#req_url").val();
-        let method = $('input[name="req_method"]:checked').val();
-        let header = $("#header").val();
-        let parameter_type = $('input[name="par_type"]:checked').val();
-        let parameter_body = $("#parameter").val();
+        var url = $("#req_url").val();
+        var method = $('input[name="req_method"]:checked').val();
+        var header = $("#header").val();
+        var parameter_type = $('input[name="par_type"]:checked').val();
+        var parameter_body = $("#parameter").val();
 
         // 断言的数据
         var assert_type = $('input[name="assert_type"]:checked').val();
         var assert_text = $("#assert").val();
 
         // 保存的数据
-        let module_id = $('select[id="selectModule"]').val();
-        let case_name = $("#case_name").val();
+        var module_id = $('select[id="selectModule"]').val();
+        var case_name = $("#case_name").val();
 
         if (url === "") {
             window.alert("URL不能为空！");
@@ -257,10 +249,7 @@
             return;
         }
 
-        window.alert("parameter:" + parameter);
-
-        $.post("/testcase/save_case",
-        {
+        $.post("/testcase/save_case", {
             url: url,
             method: method,
             header: header,
@@ -270,16 +259,14 @@
             ass_text: assert_text,
             mid: module_id,
             name: case_name,
-            cid: cid,
-        },
-        function (resp) {
-            console.log("返回的结果", resp);
-            if (resp.status == 10200){
+            cid: cid
+        }, function (resp) {
+            if (resp.status === 10200){
                 window.alert("保存成功！");
             }
                 
         });
-    };
+    }
 
 </script>
 

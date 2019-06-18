@@ -159,45 +159,40 @@
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-
 <script type="text/javascript">
     //初始化项目和模块select
     SelectInit();
 
     //发送方法
     function sendFun() {
-        let url = $("#req_url").val();
-        let method = $('input[name="req_method"]:checked').val();
-        let header = $("#header").val();
-        let type = $('input[name="par_type"]:checked').val();
-        let parameter = $("#parameter").val();
+        var url = $("#req_url").val();
+        var method = $('input[name="req_method"]:checked').val();
+        var header = $("#header").val();
+        var type = $('input[name="par_type"]:checked').val();
+        var parameter = $("#parameter").val();
 
         if (url === "") {
             window.alert("URL不能为空！");
             return;
         }
 
-        $.post("/testcase/debug",
-            {
-                url: url,
-                method: method,
-                header: header,
-                type: type,
-                parameter: parameter,
-            },
-            function (data, status) {
-                console.log("返回的结果", data.result);
-                document.querySelector("#result").value = data.result;
-            });
+        window.alert("已发送请求！");
 
-    };
+        $.post("/testcase/debug", {
+            url: url,
+            method: method,
+            header: header,
+            type: type,
+            parameter: parameter
+        }, function (resp) {
+            document.querySelector("#result").value = resp.result;
+        });
+    }
 
     //断言方法
     function assertFun() {
-
         var assert_type = $('input[name="assert_type"]:checked').val();
         var result_text = $("#result").val();
         var assert_text = $("#assert").val();
@@ -210,36 +205,33 @@
             return;
         }
 
-        $.post("/testcase/assert",
-            {
-                result: result_text,
-                assert: assert_text,
-                assert_type: assert_type,
-            },
-            function (data, status) {
-                alert("提示：" + data.result);
-                console.log("返回的结果", data.result);
-            });
-
-    };
+        $.post("/testcase/assert", {
+            result: result_text,
+            assert: assert_text,
+            assert_type: assert_type,
+        }, function (data, status) {
+            alert("提示：" + data.result);
+            console.log("返回的结果", data.result);
+        });
+    }
 
     //保存用例
     function saveFun() {
 
         //接口的基本数据
-        let url = $("#req_url").val();
-        let method = $('input[name="req_method"]:checked').val();
-        let header = $("#header").val();
-        let parameter_type = $('input[name="par_type"]:checked').val();
-        let parameter_body = $("#parameter").val();
+        var url = $("#req_url").val();
+        var method = $('input[name="req_method"]:checked').val();
+        var header = $("#header").val();
+        var parameter_type = $('input[name="par_type"]:checked').val();
+        var parameter_body = $("#parameter").val();
 
         // 断言的数据
         var assert_type = $('input[name="assert_type"]:checked').val();
         var assert_text = $("#assert").val();
 
         // 保存的数据
-        let module_id = $('select[id="selectModule"]').val();
-        let case_name = $("#case_name").val();
+        var module_id = $('select[id="selectModule"]').val();
+        var case_name = $("#case_name").val();
 
         if (url === "") {
             window.alert("URL不能为空！");
@@ -258,8 +250,7 @@
 
         window.alert("parameter:" + parameter);
 
-        $.post("/testcase/save_case",
-        {
+        $.post("/testcase/save_case", {
             url: url,
             method: method,
             header: header,
@@ -269,13 +260,12 @@
             ass_text: assert_text,
             mid: module_id,
             name: case_name, 
-            status: 2,
-        },
-        function (data) {
+            status: 2
+        }, function (data) {
             console.log("返回的结果", data);
             window.alert(data.message);
         });
-    };
+    }
 
 </script>
 
