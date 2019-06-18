@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite errors="0" failures="0" file=".py" name="InterfaceTest-20190619000459" skipped="0" tests="2" time="2.675" timestamp="2019-06-19T00:05:02">
+		<testcase classname="InterfaceTest" file="testtask_app\extend\run_task.py" line="23" name="test_run_cases_00001_3" time="0.473" timestamp="2019-06-19T00:05:00">
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testtask_app\extend\run_task.py" line="23" name="test_run_cases_00002_10" time="2.202" timestamp="2019-06-19T00:05:02">
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+	</testsuite>
+</testsuites>

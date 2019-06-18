@@ -6,7 +6,10 @@ from project_app.models import Project
 from module_app.models import Module
 from testcase_app.models import TestCase
 from testtask_app.models import TestTask
+from test_platform import settings
 
+BASE_PATH = settings.BASE_DIR.replace("\\", "/")
+EXTEND_DIR = BASE_PATH + "/testtask_app/extend/"
 
 
 def testtask_manage(request):
@@ -15,7 +18,7 @@ def testtask_manage(request):
 	"""
 	task_list = TestTask.objects.all()
 
-	return render (request, "task_list.html", {
+	return render(request, "task_list.html", {
 		"type": "list",
 		"tasks": task_list
 	})
@@ -25,7 +28,7 @@ def add_task(request):
 	"""
 	返回创建任务页面
 	"""
-	return render (request, "task_add.html", {
+	return render(request, "task_add.html", {
 		"type": "add"
 	})
 
@@ -43,10 +46,8 @@ def delete_task(request, tid):
 	"""
 	删除任务
 	"""
-
 	task = TestTask.objects.get(id=tid)
 	task.delete()
-
 	return HttpResponseRedirect("/testtask/")
 
 
@@ -64,8 +65,7 @@ def save_task(request):
 		
 		if name == "" or cases == "":
 			return JsonResponse({"status": 10102, "message": "Parameter is null"})
-		
-		print("任务的id--->", task_id)
+
 		if task_id == "0":
 			print("创建")
 			TestTask.objects.create(name=name, describe=desc, cases=cases)
@@ -185,13 +185,10 @@ def run_task(request):
 		if tid == "":
 			return JsonResponse({"status": 10200, "message": "task id is null"})
 		task = TestTask.objects.get(id=tid)
-		print(task.cases)
-		print("--->", list(task.cases))
 		case_list = json.loads(task.cases)
-		print("===>", case_list)
+
 		test_data = {}
 		for cid in case_list:
-			print("wtf", cid)
 			case = TestCase.objects.get(id=cid)
 			if case.method == 1:
 				method = "get"
@@ -219,19 +216,16 @@ def run_task(request):
 				"assert_type": assert_type,
 				"assert_text": case.assert_text,
 			}
-		print("任务下面的用例", json.dumps(test_data))
+
 		case_data = json.dumps(test_data)
 
-		from test_platform import settings
-		
-		EXTEND_DIR = settings.BASE_DIR + "\\testtask_app\\extend\\"
-		print("项目的基本路径", EXTEND_DIR)
 		with(open(EXTEND_DIR + "test_data_list.json", "w")) as f:
 			f.write(case_data)
-		run_cmd = "pytest -vs " + EXTEND_DIR+ "run_task.py --junitxml="+EXTEND_DIR+"log.xml"
+		run_cmd = "python "+EXTEND_DIR+"run_task.py"
 		print("运行的命令", run_cmd)
 		os.system(run_cmd)
 		return JsonResponse({"status": 10200, "message": "任务执行完成"})
+
 	else:
-		return JsonResponse({"status": 10200, "message": "success", "data": task_data})
+		return JsonResponse({"status": 10200, "message": "请求方法错误"})
 
