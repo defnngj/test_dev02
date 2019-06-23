@@ -117,7 +117,7 @@
 									<span class="glyphicon glyphicon-play"></span>
 								</a>
 								
-								<a href="/testtask/task_result_list/{{task.id}}/" style="margin-right: 8px;">
+								<a href="/testtask/result/{{task.id}}/" style="margin-right: 8px;">
 									<span class="glyphicon glyphicon-list-alt"></span>
 								</a>
 							</td>
@@ -128,6 +128,7 @@
 			</div>
 			{% endif%}
 
+			<!--添加任务-->
 			{% if type == "add" %}
 				{% block taskadd %}
 				
@@ -135,7 +136,8 @@
 				
 				{% endblock %}
 			{% endif %}
-			
+
+			<!--编辑任务-->
 			{% if type == "edit" %}
 				{% block taskedit %}
 				
@@ -143,6 +145,17 @@
 				
 				{% endblock %}
 			{% endif %}
+
+			<!--查看结果-->
+			{% if type == "result" %}
+				{% block taskresult %}
+
+				<!-- 其他页面可以继承 task_list.html  -->
+
+				{% endblock %}
+			{% endif %}
+
+
 		</div>
 	</div>
 </div>
@@ -156,10 +169,14 @@
 
 		$.post("/testtask/run_task/",
 		{
-			task_id: tid,
+			task_id: tid
 		},
-		function (data, status) {
-			alert("提示：" + data.message);
+		function (resp) {
+		    if(resp.status == 10200){
+		        window.alert(resp.message);
+				window.location.reload();  // 刷新页面
+			}
+
 		});
 
 	};

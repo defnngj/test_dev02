@@ -6,7 +6,10 @@ from project_app.models import Project
 from module_app.models import Module
 from testcase_app.models import TestCase
 from testtask_app.models import TestTask
+from testtask_app.models import TestResult
 from test_platform import settings
+from testtask_app.extend.task_thread import TaskThread
+
 
 BASE_PATH = settings.BASE_DIR.replace("\\", "/")
 EXTEND_DIR = BASE_PATH + "/testtask_app/extend/"
@@ -184,48 +187,28 @@ def run_task(request):
 		tid = request.POST.get("task_id", "")
 		if tid == "":
 			return JsonResponse({"status": 10200, "message": "task id is null"})
+
+		# 1、在执行线程之前，判断当前有没有任务在执行？
+		tasks = TestTask.objects.all()
+		for t in tasks:
+			if t.status == 1:
+				return JsonResponse({"status": 10200, "message": "当前有任务正在执行！"})
+
+		# 2. 修改任务的状态为：1-执行中
 		task = TestTask.objects.get(id=tid)
-		case_list = json.loads(task.cases)
+		task.status = 1
+		task.save()
 
-		test_data = {}
-		for cid in case_list:
-			case = TestCase.objects.get(id=cid)
-			if case.method == 1:
-				method = "get"
-			elif case.method == 2:
-				method = "post"
-			else:
-				method = "null"
-			
-			if case.parameter_type == 1:
-				parameter_type = "from"
-			else:
-				parameter_type = "json"
+		# 通过多线程运行测试任务
+		TaskThread(tid).run()
 
-			if case.assert_type == 1:
-				assert_type = "contains"
-			else:
-				assert_type = "mathches"
-			
-			test_data[case.id] = {
-				"url": case.url,
-				"method": method,
-				"header": case.header,
-				"parameter_type": parameter_type,
-				"parameter_body": case.parameter_body,
-				"assert_type": assert_type,
-				"assert_text": case.assert_text,
-			}
-
-		case_data = json.dumps(test_data)
-
-		with(open(EXTEND_DIR + "test_data_list.json", "w")) as f:
-			f.write(case_data)
-		run_cmd = "python "+EXTEND_DIR+"run_task.py"
-		print("运行的命令", run_cmd)
-		os.system(run_cmd)
-		return JsonResponse({"status": 10200, "message": "任务执行完成"})
+		return JsonResponse({"status": 10200, "message": "任务开始执行！"})
 
 	else:
 		return JsonResponse({"status": 10200, "message": "请求方法错误"})
+
+
+def result(request, tid):
+	result = TestResult.objects.filter(task_id=tid).order_by('-create_time')
+	return render(request, "task_result.html", {"results": result, "type": "result"})
 
