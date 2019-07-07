@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 def say_hello(request):
     input_name = request.GET.get("name", "")
     if input_name == "":
-        return HttpResponse("请求输入?name=name")
-    return render(request, "index.html", {"name": input_name})
+        return HttpResponse("please input ? name")
+    return HttpResponse("hello," + input_name)
 
 
 # 登录的首页
@@ -19,12 +19,13 @@ def index(request):
     else:
         username = request.POST.get("username", "")
         password = request.POST.get("password", "")
+
         if username == "" or password == "":
-            return render(request, "index.html", {"error": "用户名或密码为空"})
+            return render(request, "index.html", {"error": "username or password null"})
 
         user = auth.authenticate(username=username, password=password)
         if user is None:
-            return render(request, "index.html", {"error": "用户名或密码错误"})
+            return render(request, "index.html", {"error": "username or password error"})
         else:
             auth.login(request, user)  # 记录用户的登录状态
             return HttpResponseRedirect("/project/")
