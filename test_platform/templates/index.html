@@ -6,13 +6,13 @@
 
         <form class="form-signin" action="/index/" method="post">
             <h2 class="form-signin-heading" style="text-align: center">
-                接口测试平台
+                interface test platform
             </h2>
             <label for="inputUsername" class="sr-only">账号</label>
             <input type="text" id="inputUsername" name="username" class="form-control" placeholder="username">
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password">
-            <div style="color:red">{{ error }}</div>
+            <div id="error" style="color:red">{{ error }}</div>
             {% csrf_token %}
             <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
         </form>
