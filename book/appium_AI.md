@@ -174,3 +174,7 @@ driver.find_element_by_custom("ai:search").click()
 图
 
 确实定位到了，可以定位的速度特别慢，大概需要10~20秒。
+
+如果，你想知道 ```appium-classifier-plugin```支持那些元素类型，看这里:https://github.com/testdotai/appium-classifier-plugin/blob/master/lib/labels.js
+
+目前支持100多种类型。
