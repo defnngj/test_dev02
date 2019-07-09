@@ -64,7 +64,7 @@ PATH=${PATH}:${ANDROID_HOME}/tools
 3、通过```appium-doctor```命令检查环境：
 
 ```shell
-appium-doctor
+> appium-doctor
 info AppiumDoctor Appium Doctor v.1.11.0
 info AppiumDoctor ### Diagnostic for necessary dependencies starting ###
 info AppiumDoctor  ✔ The Node.js binary was found at: /usr/local/bin/node
@@ -95,7 +95,8 @@ GtiHub地址:https://github.com/testdotai/appium-classifier-plugin
 要使这个插件对Appium可用，只需转到主appium项目的安装目录下面，并运行:
 
 ```shell
-npm install test-ai-classifier
+> cd /usr/local/lib/node_modules/appium
+> npm install test-ai-classifier
 ```
 
 将这个插件安装到Appium的依赖树中，并使其可用。
@@ -103,7 +104,7 @@ npm install test-ai-classifier
 我在安装这个插件的时候各种报错，你可以试试下面的命令。
 
 ```shell
-sudo npm --registry http://registry.npm.taobao.org install test-ai-classifier  --unsafe-perm
+> sudo npm --registry http://registry.npm.taobao.org install test-ai-classifier  --unsafe-perm
 ```
 
 ### 使用
@@ -161,7 +162,10 @@ driver.quit()
 必须要指定为 ```{"ai": "test-ai-classifier"}```。
 
 * testaiConfidenceThreshold
-这个是用来控制...
+此功能决定了考虑元素的最低置信度。默认情况下，值为0.2。参数介于0和1之间的数字，其中1表示信心必须完美，0表示根本不需要信任。
+
+* shouldUseCompactResponses
+这指示appium在找到元素时包含有关元素的额外信息，这大大加快了获取此插件的输入过程。
 
 最终，我要体验的代码就是这一行：
 
@@ -173,8 +177,8 @@ driver.find_element_by_custom("ai:search").click()
 
 图
 
-确实定位到了，可以定位的速度特别慢，大概需要10~20秒。
+确实定位到了，可是定位的速度特别慢，大概需要10~20秒。
 
-如果，你想知道 ```appium-classifier-plugin```支持那些元素类型，看这里:https://github.com/testdotai/appium-classifier-plugin/blob/master/lib/labels.js
+如果，你想知道 ```appium-classifier-plugin```支持那些类型的元素定位，看这里:https://github.com/testdotai/appium-classifier-plugin/blob/master/lib/labels.js
 
 目前支持100多种类型。
